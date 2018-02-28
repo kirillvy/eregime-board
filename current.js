@@ -1,3 +1,7 @@
+/* * * * * * * * * * * * * * * *
+ * PAGE FUNCTIONALITY CHANGES  *
+ * * * * * * * * * * * * * * * */
+
 //changes the last post format for forums
 function changeLastTopic() {
     $('.c_last:contains(", By")').each(function() {
@@ -30,8 +34,42 @@ function reorganizePM() {
     $('#inserter').append($('#conversation'));
 }
 
+//opens a new window with emoticons instead of default dropdown window, prevents default behavior
+$("#emot_end").click(function() {
+    var htmlHead = '<!DOCTYPE html> <meta charset=\"utf-8\"/> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <title>Emoticons ;o</title> <script type=\"text/javascript\" src=\"http://b3.ifrm.com/static/jq171.js?z=4\"><\/script> <style>tr{display: inline-grid; color: #ffffff;}img{cursor: pointer;}div{background-color: tomato; color: #ffffff; position: fixed; right: 0px; top: 0px; font-family: \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif; font-size: 1.5em; opacity: 0.8; margin: 0; cursor: pointer; line-height: 1.5em; padding: 0 6px; }div:hover{opacity:0.95;}</style> <div class=\"close\" onclick=\"window.close()\">&#10006;</div>';
+    var htmlFoot = '<script>function insert_emot(text){var textarea=opener.document.getElementById(\"c_post-text\"); text=\" \" + text + \" \"; textarea.value=textarea.value + text;}$(\"img\").click(function(){insert_emot($(this).attr(\"alt\"));}) <\/script>';
+    $.get("../keys", function($txt) {
+        $(this).attr('target', '_blank');
+        var emotWindow = window.open('', 'emotWindow', "menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,width=1024,height=768");
+        emotWindow.document.write(htmlHead + $txt + htmlFoot);
+        $("img", emotWindow.document).click(function() { emot($(this).attr("title")); });
+    });
+})
+
+function allEmots() {
+    return;
+}
+
+/* * * * * * * * * * * * * * * *
+ * PAGE LOAD BEHAVIOR CHANGES  *
+ * * * * * * * * * * * * * * * */
+
+//checks page url and runs functions above
+if ($(location).is('[href*=/forum/], [href*=/index/]')) {
+    changeLastTopic();
+}
+if ($(location).is('[href*=/forum/]')) {
+    changeLastPost();
+}
+if ($(location).is('[href*=/topic/]')) {
+    moveQuoteButton();
+}
+if ($(location).is('[href*=/msg/]')) { //check if the URL is an inbox url
+    reorganizePM(); // re-organizes the pm page
+}
+
 //fades in on open
-function pageFunc() {
+function openPage() {
     $("#main, #foot_wrap, #copyright").fadeIn("fast");
 }
 
@@ -49,24 +87,9 @@ function reopenPage() {
     }, 400);
 }
 
-
-//checks page url and runs functions above
-if ($(location).is('[href*=/forum/], [href*=/index/]')) {
-    changeLastTopic();
-}
-if ($(location).is('[href*=/forum/]')) {
-    changeLastPost();
-}
-if ($(location).is('[href*=/topic/]')) {
-    moveQuoteButton();
-}
-if ($(location).is('[href*=/msg/]')) { //check if the URL is an inbox url
-    reorganizePM(); // re-organizes the pm page
-}
-
 //fades in on page load
 $(function() {
-    pageFunc();
+    openPage();
 });
 
 //reopens page on return
@@ -78,26 +101,14 @@ $(window).bind("pageshow", function() {
 
 //fades page on click
 $("a, :submit").click(function() {
-    if ($(this).is('[href*=http://eregime.org], :not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
+    if ($(this).is('[href*=http://eregime.org], [href*=/forumforticket/], :not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
         closePage();
     }
 });
 
-//opens a new window with emoticons instead of default dropdown window, prevents default behavior
-$("#emot_end").click(function() {
-    var htmlHead = '<!DOCTYPE html> <meta charset=\"utf-8\"/> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <title>Emoticons ;o</title> <script type=\"text/javascript\" src=\"http://b3.ifrm.com/static/jq171.js?z=4\"><\/script> <style>tr{display: inline-grid; color: #ffffff;}img{cursor: pointer;}div{background-color: tomato; color: #ffffff; position: fixed; right: 0px; top: 0px; font-family: \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif; font-size: 1.5em; opacity: 0.8; margin: 0; cursor: pointer; line-height: 1.5em; padding: 0 6px; }div:hover{opacity:0.95;}</style> <div class=\"close\" onclick=\"window.close()\">&#10006;</div>';
-    var htmlFoot = '<script>function insert_emot(text){var textarea=opener.document.getElementById(\"c_post-text\"); text=\" \" + text + \" \"; textarea.value=textarea.value + text;}$(\"img\").click(function(){insert_emot($(this).attr(\"alt\"));}) <\/script>';
-    $.get("../keys", function($txt) {
-        $(this).attr('target', '_blank');
-        var emotWindow = window.open('', 'emotWindow', "menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,width=1024,height=768");
-        emotWindow.document.write(htmlHead + $txt + htmlFoot);
-        $("img", emotWindow.document).click(function() { emot($(this).attr("title")); });
-    });
-})
-
-function allEmots() {
-    return;
-}
+/* * * * * * * * * * * * * * * *
+ * PAGE LEAVE BEHAVIOR CHANGES *
+ * * * * * * * * * * * * * * * */
 
 //prevents fade if user opens a new window or tab (win/mac)
 var newWin = false;
@@ -122,11 +133,15 @@ $(document).mousedown(function(event) {
     }
 });
 
+/* * * * * * * * * * * * * * * * * *
+ * SPECIALS/LIMITED TIME FUNCTIONS *
+ * * * * * * * * * * * * * * * * * */
+
 //april fools easter egg
 
 var a1 = new Date();
 if (a1.getDate() == 1 && a1.getMonth() == 3) {
-    $('body').append('<img class="logo" src="http://b2.ifrm.com/10755/76/0/a322065/avatar-322065.gif" alt="eregime"><div id="a1"><div>COPY DEEZ NUTZ</div></div>');
+    $('body').append('<img class="mouselogo" src="http://b2.ifrm.com/10755/76/0/a322065/avatar-322065.gif" alt="eregime"><div id="a1"><div>COPY DEEZ NUTZ</div></div>');
     $(document).keydown(function(event) {
         if (event.which == "67" && event.ctrlKey) {
             $("#a1").fadeIn("fast");
@@ -136,7 +151,7 @@ if (a1.getDate() == 1 && a1.getMonth() == 3) {
         }
     });
     $(document).mousemove(function(e) {
-        $('.logo').offset({
+        $('.mouselogo').offset({
             left: e.pageX + 10,
             top: e.pageY + 10
         });

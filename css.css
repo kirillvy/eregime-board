@@ -393,18 +393,12 @@ ul.cat-pages {
     width: 49%;
 }
 
-
-/* .cat-topicpages a. */
-
 .cat-pages a,
 .cat-pagesjump i {
     background: #fff;
     border: 1px solid #376dbc;
     color: #5a70b3;
 }
-
-
-/*.cat-topicpages a:hover, */
 
 .cat-pages a:hover {
     background: #dee7f5;
@@ -430,9 +424,6 @@ ul.cat-pages {
 }
 
 ul.cat-topicpages {
-    /* float: right;
-font-size: 11px;
-padding: 1px 0; */
     display: inline-block;
 }
 
@@ -610,12 +601,6 @@ dl.user_profile dd {
     font-style: italic;
     margin-left: 8px;
 }
-
-
-/* dl.user_info dd {
-    font-weight: 700;
-}
- */
 
 #profile_menu ul {
     -moz-opacity: 1;
@@ -2156,7 +2141,6 @@ table#address_book,
 table#pm_settings_box,
 table#board_settings {
     width: 79%;
-    /* float: right; */
     margin: 10px 0;
     display: inline-table;
     margin: 10px 0 0 10px;
@@ -2183,10 +2167,8 @@ table#edit_sig,
 table#avatar_gallery_sys,
 table#photo_settings,
 table#pm_compose {
-    /* float: right; */
     width: 79%;
     margin: 10px 0 0 10px;
-    /* margin-left: 10px; */
     display: inline-table;
 }
 
@@ -2208,6 +2190,7 @@ div#main {
     height: 100vh;
     background-color: white;
     z-index: 10;
+    cursor: none;
 }
 
 #a1>div {
@@ -2223,6 +2206,6 @@ div#main {
     transform: translate(0, -50%);
 }
 
-.logo {
-    z-index: 11;
+.mouselogo {
+    z-index: 3;
 }
