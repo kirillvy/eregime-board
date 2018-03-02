@@ -16,7 +16,7 @@ function changeLastPost() {
         $(this).children('.c_cat-title').append($(this).find('.cat-topicpages'));
         $(this).children('.c_cat-lastpost').html($(this).children('.c_cat-lastpost').html().replace(/Last Post By/g,
             '<strong><a href="' + $(this).find('.c_cat-title a:first-child').attr('href') + '" title="Last Post">Last Post By</a></strong>'));
-        $(this).find('.c_cat-title a:first-child').attr('href', $(this).find('.c_cat-title a:first-child').attr('href') + '1/');
+        $(this).find('.c_cat-title>a').attr('href', $(this).find('.c_cat-title>a').attr('href') + '1/');
     });
 }
 
