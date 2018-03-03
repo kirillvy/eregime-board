@@ -2132,7 +2132,6 @@ tr.c_info {
 
 div#boardmeta {
     width: 20%;
-    display: inline-block;
     clear: none;
     float: left;
 }
@@ -2208,4 +2207,8 @@ div#main {
 
 .mouselogo {
     z-index: 3;
+}
+
+td.c_sig {
+    border-top: 2px dashed lightslategray;
 }

@@ -13,7 +13,7 @@ function changeLastTopic() {
 //changes the last post format for topics
 function changeLastPost() {
     $('.row1, .row2').each(function() {
-        $(this).children('.c_cat-title').append($(this).find('.cat-topicpages'));
+        $(this).find('.description').before($(this).find('.cat-topicpages'));
         $(this).children('.c_cat-lastpost').html($(this).children('.c_cat-lastpost').html().replace(/Last Post By/g,
             '<strong><a href="' + $(this).find('.c_cat-title a:first-child').attr('href') + '" title="Last Post">Last Post By</a></strong>'));
         $(this).find('.c_cat-title>a').attr('href', $(this).find('.c_cat-title>a').attr('href') + '1/');
