@@ -12,7 +12,7 @@ function changeLastTopic() {
 
 //changes the last post format for topics
 function changeLastPost() {
-    $('.row1, .row2').each(function() {
+    $('.row1:has(.c_cat-lastpost), .row2:has(.c_cat-lastpost)').each(function() {
         $(this).find('.description').before($(this).find('.cat-topicpages'));
         $(this).children('.c_cat-lastpost').html($(this).children('.c_cat-lastpost').html().replace(/Last Post By/g,
             '<strong><a href="' + $(this).find('.c_cat-title a:first-child').attr('href') + '" title="Last Post">Last Post By</a></strong>'));
@@ -99,13 +99,6 @@ $(window).bind("pageshow", function() {
     }
 });
 
-//fades page on click
-$("a, :submit").click(function() {
-    if ($(this).is('[href*=http://eregime.org], [href*=/forumforticket/], :not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
-        closePage();
-    }
-});
-
 /* * * * * * * * * * * * * * * *
  * PAGE LEAVE BEHAVIOR CHANGES *
  * * * * * * * * * * * * * * * */
@@ -130,6 +123,13 @@ $(document).mousedown(function(event) {
         $(document).mousedown(function(event) {
             newWin = false;
         })
+    }
+});
+
+//fades page on click
+$("a, :submit").click(function() {
+    if ($(this).is('[href*=http://eregime.org], [href*=/forumforticket/], :not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
+        closePage();
     }
 });
 
