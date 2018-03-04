@@ -1401,8 +1401,10 @@ td.c_poll-bar {
 
 blockquote.quote_blockquote {
     font-size: 11px;
+    background: none;
+    border: 0;
+    width: 95%;
 }
-
 td.c_post {
     line-height: 1.7;
     vertical-align: top;
@@ -2211,4 +2213,38 @@ div#main {
 
 td.c_sig {
     border-top: 2px dashed lightslategray;
+}
+
+/* quote box changes */
+
+.quote_blockquote dl {
+    background: none;
+    color: black;
+    border-bottom: none;
+}
+.quote_blockquote dl dt {
+    color: black;
+    font-weight: unset;
+}
+
+.quote_blockquote dl dd {
+    text-align: left;
+}
+
+.quote_blockquote dl dt::before {
+    content: "QUOTE (";
+}
+
+.quote_blockquote dl dt::after {
+    content: ' @';
+}
+
+.quote_blockquote dl dd::after {
+    content: ')';
+}
+
+.quote_blockquote div {
+    background: white;
+    border: 1px solid black;
+    padding: 0 2px;
 }
