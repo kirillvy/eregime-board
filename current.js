@@ -2,6 +2,14 @@
  * PAGE FUNCTIONALITY CHANGES  *
  * * * * * * * * * * * * * * * */
 
+//hides forums on the front page 
+function hideForums() {
+    hideForumID.forEach( function(element){
+        $('#forum-' + element).next().next('tr:has(td.c_subforum)').hide();
+        $('#forum-' + element + ' td.c_mark').attr('rowspan', '2');
+    });
+}
+
 //changes the last post format for forums
 function changeLastTopic() {
     $('.c_last:contains(", By")').each(function() {
@@ -55,6 +63,9 @@ function allEmots() {
  * * * * * * * * * * * * * * * */
 
 //checks page url and runs functions above
+if ($(location).is('[href*=/index/]')) {
+    hideForums();
+}
 if ($(location).is('[href*=/forum/], [href*=/index/]')) {
     changeLastTopic();
 }
