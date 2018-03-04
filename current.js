@@ -66,7 +66,8 @@ function allEmots() {
 
 //checks page url and runs functions above
 if ($(location).is('[href*=/index/]')) {
-    hideForums();
+    if (typeof hideForumID !== 'undefined') {
+    hideForums();}
 }
 if ($(location).is('[href*=/forum/], [href*=/index/]')) {
     changeLastTopic();
