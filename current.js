@@ -4,12 +4,10 @@
 
 //hides forums on the front page 
 function hideForums() {
-    if (typeof hideForumID !== 'undefined') {
-        hideForumID.forEach( function(element){
-            $('#forum-' + element).next().next('tr:has(td.c_subforum)').hide();
-            $('#forum-' + element + ' td.c_mark').attr('rowspan', '2');
-        });
-    }
+    hideForumID.forEach( function(element){
+        $('#forum-' + element).next().next('tr:has(td.c_subforum)').hide();
+        $('#forum-' + element + ' td.c_mark').attr('rowspan', '2');
+    });
 }
 
 //changes the last post format for forums
@@ -66,7 +64,8 @@ function allEmots() {
 
 //checks page url and runs functions above
 if ($(location).is('[href*=/index/]')) {
-    hideForums();
+    if (typeof hideForumID !== 'undefined') {
+    hideForums();}
 }
 if ($(location).is('[href*=/forum/], [href*=/index/]')) {
     changeLastTopic();
