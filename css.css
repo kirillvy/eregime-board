@@ -1404,6 +1404,7 @@ blockquote.quote_blockquote {
     background: none;
     border: 0;
     width: 95%;
+    margin: 0 auto;
 }
 td.c_post {
     line-height: 1.7;
@@ -2131,6 +2132,8 @@ tr.c_info {
 #shoutrefresh {
     cursor: pointer
 }
+
+/* changes in preferences and inbox pages */
 
 div#boardmeta {
     width: 20%;
