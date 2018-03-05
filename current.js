@@ -64,17 +64,11 @@ function allEmots() {
 }
 
 //saves scroll position
-var scrollSaved = false;
-
 function saveScroll() {
-    if (!scrollSaved) {
-        stateData = {
-            path: window.location.href,
-            scrollTop: $(window).scrollTop()
-        };
-        window.history.replaceState(stateData, null, window.location.href);
-        scrollSaved = true;
-    }
+    stateData = {
+        scrollTop: $(window).scrollTop()
+    };
+    window.history.replaceState(stateData, null, window.location.href);
 }
 
 /* * * * * * * * * * * * * * * *
@@ -118,7 +112,6 @@ $(function () {
 
 //fades out on leave
 function closePage() {
-    saveScroll();
     $("#main, #foot_wrap, #copyright").fadeOut("fast");
 }
 
