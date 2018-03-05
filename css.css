@@ -892,7 +892,7 @@ table#pm_inbox thead {
 
 .calendar td.cal_inactive {
     background: #b5cae8;
-    color: #555!important;
+    color: #555 !important;
 }
 
 .calendar td div {
@@ -1406,6 +1406,7 @@ blockquote.quote_blockquote {
     width: 95%;
     margin: 0 auto;
 }
+
 td.c_post {
     line-height: 1.7;
     vertical-align: top;
@@ -1445,7 +1446,7 @@ td.c_nosig {
 }
 
 td.c_nosig {
-    border-top-style: hidden!important;
+    border-top-style: hidden !important;
 }
 
 blockquote dl dt,
@@ -2225,6 +2226,7 @@ td.c_sig {
     color: black;
     border-bottom: none;
 }
+
 .quote_blockquote dl dt {
     color: black;
     font-weight: unset;

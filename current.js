@@ -1,3 +1,4 @@
+var mposition = 0;
 /* * * * * * * * * * * * * * * *
  * PAGE FUNCTIONALITY CHANGES  *
  * * * * * * * * * * * * * * * */
@@ -85,34 +86,47 @@ if ($(location).is('[href*=/msg/]')) { //check if the URL is an inbox url
 
 //fades in on open
 function openPage() {
-    $("#main, #foot_wrap, #copyright").fadeIn("fast");
+
+    $("#main, #foot_wrap, #copyright").fadeIn("fast", function () {
+        if (window.history.state !== null) {
+            $(window).scrollTop(history.state.scrollTop);
+        }
+    });
 }
 
 //fades out on leave
 function closePage() {
-    $("#main, #foot_wrap, #copyright").animate({
+    /* $("#main, #foot_wrap, #copyright").animate({
         opacity: 0
-    }, "fast");
+    }, "fast"); */
+    $("#main, #foot_wrap, #copyright").fadeOut("fast");
 }
 
-//fades back in on return
+/* //fades back in on return
 function reopenPage() {
+    //console.log(window.history.state.scrollTop, history.state.scrollTop);
     $("#main, #foot_wrap, #copyright").animate({
         opacity: 1
-    }, 400);
-}
+    }, 400, function () {
+        console.log(window.history.state.scrollTop, history.state.scrollTop);
+        $('html, body').animate({
+            scrollTop: history.state.scrollTop || 0
+        }, 400);
+    });
+
+} */
 
 //fades in on page load
 $(function () {
     openPage();
 });
 
-//reopens page on return
+/* //reopens page on return
 $(window).bind("pageshow", function () {
-    if ($('#main').css('opacity') == 0) {
+    if ($('#main').css('display') == 'none') {
         reopenPage();
     }
-});
+}); */
 
 /* * * * * * * * * * * * * * * *
  * PAGE LEAVE BEHAVIOR CHANGES *
@@ -141,9 +155,16 @@ $(document).mousedown(function (event) {
     }
 });
 
+
 //fades page on click
 $("a, :submit").click(function () {
-    if ($(this).is('[href*=http://eregime.org], [href*=/forumforticket/], :not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
+    if ($(this).is('[href*=' + $(location).prop("hostname") + ']:not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
+
+        stateData = {
+            path: window.location.href,
+            scrollTop: $(window).scrollTop()
+        };
+        window.history.replaceState(stateData, null, window.location.href);
         closePage();
     }
 });
