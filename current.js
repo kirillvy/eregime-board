@@ -67,7 +67,11 @@ function allEmots() {
 var scrollSaved = false;
 
 function saveScroll() {
+<<<<<<< HEAD
     if (!scrollSaved) {
+=======
+    if (!notUnloaded) {
+>>>>>>> 452455b8760c96d85c6fa1f0511643ec70dfb3c4
         stateData = {
             path: window.location.href,
             scrollTop: $(window).scrollTop()
@@ -107,7 +111,11 @@ function openPage() {
     });
 }
 
+<<<<<<< HEAD
 //loads page
+=======
+//fades in on page load
+>>>>>>> 452455b8760c96d85c6fa1f0511643ec70dfb3c4
 $(function () {
     openPage();
 });
