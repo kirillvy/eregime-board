@@ -35,6 +35,7 @@ function moveQuoteButton() {
     $('[id*=post-]').each(function () {
         $(this).find('.right').append($(this).next().next().next().find('.right').children());
     });
+
 }
 
 //reorganizes private messages and puts messages inside message header table
@@ -62,6 +63,20 @@ function allEmots() {
     return;
 }
 
+//saves scroll position
+var scrollSaved = false;
+
+function saveScroll() {
+    if (!scrollSaved) {
+        stateData = {
+            path: window.location.href,
+            scrollTop: $(window).scrollTop()
+        };
+        window.history.replaceState(stateData, null, window.location.href);
+        scrollSaved = true;
+    }
+}
+
 /* * * * * * * * * * * * * * * *
  * PAGE LOAD BEHAVIOR CHANGES  *
  * * * * * * * * * * * * * * * */
@@ -83,7 +98,7 @@ if ($(location).is('[href*=/msg/]')) { //check if the URL is an inbox url
     reorganizePM(); // re-organizes the pm page
 }
 
-//fades in on open
+//fades in on open and scrolls to position
 function openPage() {
     $("#main, #foot_wrap, #copyright").fadeIn("fast", function () {
         if (history.state !== null) {
@@ -92,27 +107,25 @@ function openPage() {
     });
 }
 
-//fades out on leave
-function closePage() {
-    $("#main, #foot_wrap, #copyright").fadeOut("fast");
-}
-
-//fades in on page load
+//loads page
 $(function () {
     openPage();
-});
-
-//saves scroll position before leaving
-$(window).unload(function () {
-    stateData = {
-        scrollTop: $(window).scrollTop()
-    };
-    window.history.replaceState(stateData, null);
 });
 
 /* * * * * * * * * * * * * * * *
  * PAGE LEAVE BEHAVIOR CHANGES *
  * * * * * * * * * * * * * * * */
+
+//fades out on leave
+function closePage() {
+    saveScroll();
+    $("#main, #foot_wrap, #copyright").fadeOut("fast");
+}
+
+//saves scroll position before leaving (if not already saved)
+$(window).on('beforeunload ', function () {
+    saveScroll();
+});
 
 //prevents fade if user opens a new window or tab (win/mac)
 var newWin = false;
