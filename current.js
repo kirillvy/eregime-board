@@ -90,16 +90,21 @@ if ($(location).is('[href*=/topic/]')) {
 }
 if ($(location).is('[href*=/msg/]')) { //check if the URL is an inbox url
   reorganizePM(); // re-organizes the pm page
-}
+} //
 
 //fades in on open and scrolls to position
-
 function openPage() {
+  mloader = false;
+  $('.loader').fadeOut("fast");
   $("#main, #foot_wrap, #copyright").fadeIn("fast", function () {
     if (history.state !== null) {
       $(window).scrollTop(history.state.scrollTop);
     } else if (newTheme && location.hash.length > 1) {
-      $(window).scrollTop($("[name=" + location.hash.substr(1) + "]").first().offset().top - 95);
+      var moffset = 95;
+      if ($(window).width() < 426) {
+        moffset = 300;
+      }
+      $(window).scrollTop($("[name=" + location.hash.substr(1) + "]").first().offset().top - moffset);
     }
   });
 }
@@ -151,6 +156,9 @@ $(document).mousedown(function (event) {
 $("a, :submit").click(function () {
   if ($(this).is('[href*=' + $(location).prop("hostname") + ']:not([href*=#], [id*=preview], [target=_blank])') && newWin == false) {
     closePage();
+    window.setTimeout(function () {
+      $('.loader').fadeIn(300);
+    }, 900);
   }
 });
 
