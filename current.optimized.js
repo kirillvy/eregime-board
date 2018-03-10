@@ -1,12 +1,17 @@
 /* * * * * * * * * * * * * * * *
  * PAGE FUNCTIONALITY CHANGES  *
  * * * * * * * * * * * * * * * */
-//detects safari
+//detects mobile or safari (fixes issue with ads wider than the page on mobile)
 var is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-if (is_safari) {
-  $('#body').css({ 'overflow-x': 'hidden' });
+if ($(window).width() < 769) {
+  if (is_safari) {
+    $('#body').css({ 'overflow-x': 'hidden' });
 
+  }
+  else {
+    $('html, body').css({ 'overflow-x': 'hidden' });
+  }
 }
 
 //opens a new window with emoticons instead of default dropdown window, prevents default behavior
@@ -42,6 +47,7 @@ if ($(location).is('[href*=/index/]')) {
     });
   }
 }
+
 //changes the last post format for forums
 if ($(location).is('[href*=/forum/], [href*=/index/]')) {
   $('.c_last:contains(", By")').each(function () {
@@ -49,6 +55,7 @@ if ($(location).is('[href*=/forum/], [href*=/index/]')) {
   });
   $('.c_last-title:first-child').remove();
 }
+
 //changes the last post format for topics
 if ($(location).is('[href*=/forum/]')) {
   $('.row1:has(.c_cat-lastpost), .row2:has(.c_cat-lastpost)').each(function () {
@@ -58,12 +65,14 @@ if ($(location).is('[href*=/forum/]')) {
     $(this).find('.c_cat-title>a').attr('href', $(this).find('.c_cat-title>a').attr('href') + '1/');
   });
 }
+
 //moves quote button from the footer to the header
 if ($(location).is('[href*=/topic/]')) {
   $('[id*=post-]').each(function () {
     $(this).find('.right').append($(this).next().next().next().find('.right').children());
   });
 }
+
 //reorganizes private messages and puts messages inside message header table
 if ($(location).is('[href*=/msg/]')) {
   $('#pm_settings li:first-child').append($('#pm_folders'));
@@ -71,25 +80,25 @@ if ($(location).is('[href*=/msg/]')) {
   $('#inserter').append($('#conversation'));
 }
 
-//loads page on open and scrolls to positio
+//loads page on open and scrolls to position
 function pageLoad() {
   mloader = false;
   $('.loader').fadeOut("fast");
   $("#main, #foot_wrap, #copyright").fadeIn("fast", function () {
-    if (history.state !== null) {
-
-      $(window).scrollTop(history.state.scrollTop);
-
-
-    } else if (newTheme && location.hash.length > 1) {
-      var moffset = 95;
-      if ($(window).width() < 426) {
-        moffset = 300;
+    var timeout = 0;
+    if (is_safari)
+      timeout = 201;
+    window.setTimeout(function () {
+      if (history.state !== null) {
+        $(window).scrollTop(history.state.scrollTop);
+      } else if (newTheme && location.hash.length > 1) {
+        var moffset = 95;
+        if ($(window).width() < 426) {
+          moffset = 300;
+        }
+        $(window).scrollTop($("[name=" + location.hash.substr(1) + "]").parent().parent().position().top - moffset);
       }
-      $(window).scrollTop($("[name=" + location.hash.substr(1) + "]").parent().parent().position().top - moffset);
-
-
-    }
+    }, timeout);
   });
 }
 
@@ -97,8 +106,11 @@ $(function () {
   pageLoad()
 });
 
+//reopens cached page (safari for ios)
+var scrollRecorded = false;
 $(window).bind("popstate", function (event) {
   if (is_safari) {
+    scrollRecorded = false
     pageLoad();
     window.setTimeout(function () {
       $('.loader').fadeOut('fast');
@@ -115,21 +127,6 @@ $(window).bind("popstate", function (event) {
 /* * * * * * * * * * * * * * * *
  * PAGE LEAVE BEHAVIOR CHANGES *
  * * * * * * * * * * * * * * * */
-
-
-//saves scroll position before leaving
-
-
-
-$(window).on('beforeunload ', function () {
-  if (!is_safari) {
-    stateData = {
-      scrollTop: $(window).scrollTop()
-    };
-    window.history.replaceState(stateData, null, window.location.href);
-  }
-});
-
 
 //prevents fade if user opens a new window or tab (win/mac)
 var n = false;
@@ -153,28 +150,35 @@ $(document).mousedown(function (event) {
   }
 });
 
-//fades page on click
+function beforeUnload() {
+  stateData = {
+    scrollTop: $(window).scrollTop()
+  };
+  window.history.replaceState(stateData, null, window.location.href);
+}
+
+$(window).bind('beforeunload', function () {
+  if (!is_safari || !scrollRecorded)
+    beforeUnload();
+});
+
+
+//fades page on click, saves scroll position, shows loader if slow connection
 $("a, :submit").click(function (e) {
   var url = $(this).attr('href');
   if ($(this).is('[href*=' + $(location).prop("hostname") + ']:not([href*=#], [id*=preview], [target=_blank])') && n == false) {
     if (is_safari) {
-      stateData = {
-        scrollTop: $(window).scrollTop()
-      };
-      window.history.replaceState(stateData, null, window.location.href);
       e.preventDefault();
       window.setTimeout(function () {
         document.location.href = url;
       }, 200);
+      beforeUnload();
+      scrollRecorded = true;
     }
     $("#main, #foot_wrap, #copyright").fadeOut("fast");
     window.setTimeout(function () {
-      $('.loader').fadeIn(300);
+      $('.loader').fadeIn('fast');
     }, 900);
-    window.setTimeout(function () {
-      $('.loader').fadeIn(300);
-    }, 900);
-    /* } */
   }
 });
 
