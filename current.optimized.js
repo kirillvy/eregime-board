@@ -11,6 +11,7 @@ if ($(window).width() < 769) {
   }
   else {
     $('html, body').css({ 'overflow-x': 'hidden' });
+
   }
 }
 
